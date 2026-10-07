@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Upper Limb Bones 3D | Velvet Pages</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--bg:#120a10;--card:#1d1119;--gold:#d4af37;--tx:#efe6d8;--mu:#a99a95;--ln:#3a2634}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 Inter,system-ui,sans-serif}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;margin:0}
+header{padding:56px 20px 28px;text-align:center;background:radial-gradient(ellipse at top,#3b1230,#120a10 70%)}
+header h1{font-size:clamp(2rem,6vw,3.8rem);color:var(--gold);font-weight:900}
+header p{max-width:620px;margin:12px auto;color:var(--mu)}
+.by{font-size:.9rem;color:var(--tx)}
+section{max-width:1150px;margin:0 auto;padding:28px 16px}
+h2{font-size:1.8rem;color:var(--gold);margin-bottom:12px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+button{background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer}
+button:hover,button.on{border-color:var(--gold);color:var(--gold)}button:focus-visible{outline:2px solid var(--gold)}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:900px){.grid{grid-template-columns:1.1fr 1fr}.sticky{position:sticky;top:10px;align-self:start}}
+#cv{height:min(62vh,520px);border:1px solid var(--ln);border-radius:14px;background:radial-gradient(circle at 50% 30%,#2b1527,#0c060a);position:relative;touch-action:none}
+#cv canvas{display:block;width:100%;height:100%;border-radius:14px}
+#tip{position:absolute;left:10px;right:10px;bottom:10px;background:#000c;border:1px solid var(--gold);border-radius:8px;padding:8px 12px;font-size:.9rem;display:none}
+.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;color:var(--mu);margin-top:8px}
+.leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:14px 16px;margin:10px 0}
+.card h3{font-size:1.1rem;color:var(--gold)}.card p{margin:4px 0 0;color:#d9cdc4}
+.hold{border-left:4px solid var(--gold)}.mn{border-left:4px solid #8e6bd1}.tr{border-left:4px solid #c0392b}
+.lv{font-size:.75rem;color:var(--mu)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+td,th{padding:8px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:top}th{color:var(--gold)}
+.tw{overflow-x:auto}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.flow span{background:var(--card);border:1px solid var(--gold);border-radius:20px;padding:5px 12px;font-size:.88rem}
+.flow b{color:var(--gold)}
+footer{text-align:center;padding:36px 16px;border-top:1px solid var(--ln);color:var(--mu)}
+footer a{color:var(--gold)}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style></head><body>
+<header>
+<h1>The Upper Limb Skeleton in 3D</h1>
+<p>Clavicle, scapula, humerus, radius, ulna and hand. Rotate, separate and tap each part, from first look to exam-level detail.</p>
+<div class="by">Made by Mayukh Sarkar, 1st Year MBBS, with Velvet Pages</div>
+</header>
+
+<section id="lab">
+<h2>3D Bone Lab</h2>
+<div class="bar" id="tabs"></div>
+<div class="grid">
+<div class="sticky">
+<div id="cv"><div id="tip"></div></div>
+<div class="bar">
+<button id="bPos">Anatomical position</button>
+<button id="bCol" class="on">Colour: regions</button>
+<label style="align-self:center;font-size:.9rem">Separate parts <input id="sep" type="range" min="0" max="1" step=".02" value="0"></label>
+</div>
+<div class="leg" id="leg"></div>
+<div class="leg">Drag to rotate, scroll to zoom, tap a part to name it.</div>
+</div>
+<div>
+<div class="bar" id="lvls"></div>
+<div id="info"></div>
+</div></div>
+</section>
+
+<section><h2>Joints and their types</h2>
+<div class="tw"><table><tr><th>Joint</th><th>Bones</th><th>Type</th><th>Movement</th></tr>
+<tr><td>Sternoclavicular</td><td>Clavicle, sternum</td><td>Synovial, saddle (with disc)</td><td>Elevation, depression, protraction, retraction</td></tr>
+<tr><td>Acromioclavicular</td><td>Clavicle, acromion</td><td>Synovial, plane</td><td>Gliding; scapular rotation</td></tr>
+<tr><td>Glenohumeral</td><td>Scapula, humerus</td><td>Synovial, ball and socket</td><td>All movements; most mobile</td></tr>
+<tr><td>Elbow (humeroulnar, humeroradial)</td><td>Humerus, ulna, radius</td><td>Synovial, hinge</td><td>Flexion, extension</td></tr>
+<tr><td>Proximal radioulnar</td><td>Radial head, ulna</td><td>Synovial, pivot</td><td>Pronation, supination</td></tr>
+<tr><td>Distal radioulnar</td><td>Ulnar head, radius</td><td>Synovial, pivot</td><td>Pronation, supination</td></tr>
+<tr><td>Radiocarpal (wrist)</td><td>Radius, scaphoid, lunate, triquetral</td><td>Synovial, ellipsoid</td><td>Flexion, extension, abduction, adduction</td></tr>
+<tr><td>Midcarpal</td><td>Proximal and distal carpal rows</td><td>Synovial, plane/compound</td><td>Adds to wrist movement</td></tr>
+<tr><td>1st carpometacarpal</td><td>Trapezium, 1st metacarpal</td><td>Synovial, saddle</td><td>Opposition of thumb</td></tr>
+<tr><td>2nd-5th carpometacarpal</td><td>Distal row, metacarpals</td><td>Synovial, plane</td><td>Slight gliding</td></tr>
+<tr><td>Metacarpophalangeal</td><td>Metacarpal head, phalanx</td><td>Synovial, condyloid</td><td>Flexion, extension, abduction, adduction</td></tr>
+<tr><td>Interphalangeal</td><td>Phalanges</td><td>Synovial, hinge</td><td>Flexion, extension</td></tr>
+</table></div></section>
+
+<section><h2>Flowcharts</h2>
+<div class="card"><h3>Bone and joint chain</h3><div class="flow" id="f1"></div></div>
+<div class="card"><h3>Nerve supply: brachial plexus</h3><div class="flow" id="f2"></div></div>
+<div class="card"><h3>Study path: basic to advanced</h3><div class="flow" id="f3"></div></div>
+</section>
+
+<footer>
+<h3 style="color:var(--gold)">Velvet Pages</h3>
+<p>Built for Velvetians. Questions or corrections: <a href="mailto:mayukhsarkar1319@gmail.com">mayukhsarkar1319@gmail.com</a></p>
+<p><a href="https://www.instagram.com/mayukh2006nov?stkn=MWQ3Z2xoeXJjenMxOQ==" target="_blank" rel="noopener">Instagram: mayukh2006nov</a></p>
+<p style="font-size:.8rem">Study aid for first-year MBBS. Verify against your textbook (BD Chaurasia, Gray's).</p>
+</footer>
+
+<script>
+const REG={body:['#e9e1cf','Shaft / body'],art:['#e8b84a','Articular surface'],mus:['#c0392b','Muscle / ligament attachment'],nrv:['#2aa6a0','Nerve / vessel relation'],pro:['#8e6bd1','Process / landmark']};
+const B={
+clavicle:{t:'Clavicle',hold:'Flat, broad end is lateral (acromial). Rounded, thick end is medial (sternal). Medial two-thirds bulge forward, lateral third curves back. Rough conoid tubercle and trapezoid line face down and back. The groove faces down.',
+items:[[1,'What it is','Long S-shaped bone, the only bony strut joining the limb to the trunk. It has no medullary cavity.'],
+[1,'Parts','Sternal end, shaft, acromial end, conoid tubercle, trapezoid line, subclavian groove.'],
+[2,'Origins','Pectoralis major (clavicular head), sternocleidomastoid (clavicular head), anterior deltoid.'],
+[2,'Insertions','Trapezius (posterior lateral third), subclavius (groove).'],
+[2,'Joints','Sternoclavicular (saddle), acromioclavicular (plane). Coracoclavicular ligament (conoid + trapezoid) holds it down.'],
+[3,'Nerve supply','Nerve to subclavius (C5-C6). Skin over it: supraclavicular nerves (C3-C4).'],
+[3,'Clinical','Most fractured at the junction of middle and lateral thirds. The medial fragment is pulled up by SCM; the lateral drops with arm weight.']],
+mn:['Clavicle: "Convex Close to Chest" - the medial curve is convex forward.','Conoid is medial, trapezoid is lateral: "Conoid Close to the Core".'],
+tr:['Trap: it is the first bone to ossify, yet its medial epiphysis is the last to fuse (about 25 years).','Trap: it ossifies in membrane AND cartilage, though classed as a long bone.']},
+scapula:{t:'Scapula',hold:'Costal (smooth, concave) surface faces the ribs. Glenoid cavity points laterally and slightly forward. Spine is on the back and ends as the acromion. The thick lateral border is the side with the glenoid. Coracoid projects forward.',
+items:[[1,'What it is','Flat triangular bone over ribs 2-7, vertebral levels T2-T7.'],
+[1,'Parts','Superior, inferior and lateral angles; medial, lateral and superior borders; spine; acromion; coracoid; glenoid cavity; suprascapular notch.'],
+[2,'Origins','Supraspinatus, infraspinatus, subscapularis, teres minor and major, long head of triceps (infraglenoid), long head of biceps (supraglenoid), short head of biceps and coracobrachialis (coracoid tip), deltoid (spine, acromion).'],
+[2,'Insertions','Serratus anterior, levator scapulae, rhomboids (medial border); pectoralis minor (coracoid); trapezius (spine, acromion).'],
+[2,'Joints','Glenohumeral (ball and socket), acromioclavicular (plane).'],
+[3,'Nerve supply','Suprascapular, dorsal scapular, long thoracic, subscapular nerves.'],
+[3,'Clinical','Winged scapula = long thoracic nerve injury (serratus anterior).']],
+mn:['Rotator cuff: SITS - Supraspinatus, Infraspinatus, Teres minor, Subscapularis.','Suprascapular notch: "Army (artery) over the bridge, Navy (nerve) under".'],
+tr:['Trap: the artery passes OVER the superior transverse ligament, the nerve passes UNDER it.','Trap: the scapula has no joint with the trunk; it is held only by muscles.']},
+humerus:{t:'Humerus',hold:'Head faces medially, upward and slightly back. Greater tubercle is lateral. Lower end: trochlea (spool) is medial, capitulum (ball) is lateral. The olecranon fossa is on the back.',
+items:[[1,'What it is','The long bone of the arm with proximal end, shaft and distal end.'],
+[1,'Parts','Head, anatomical neck, greater and lesser tubercles, intertubercular sulcus, surgical neck, deltoid tuberosity, spiral groove, capitulum, trochlea, epicondyles, coronoid, radial and olecranon fossae.'],
+[2,'Insertions','Supraspinatus, infraspinatus, teres minor (greater tubercle, top to bottom); subscapularis (lesser tubercle); pectoralis major (lateral lip); latissimus dorsi (floor); teres major (medial lip); deltoid (deltoid tuberosity); coracobrachialis; brachialis (origin, front of lower shaft).'],
+[2,'Origins','Triceps lateral and medial heads (back of shaft); common flexor origin (medial epicondyle); common extensor origin (lateral epicondyle).'],
+[2,'Joints','Glenohumeral (ball and socket), elbow (hinge).'],
+[3,'Nerve supply','Axillary nerve at surgical neck. Radial nerve in spiral groove. Ulnar nerve behind medial epicondyle. Median nerve and brachial artery in front of the elbow.'],
+[3,'Clinical','Surgical neck fracture: axillary nerve. Mid-shaft fracture: radial nerve, wrist drop. Medial epicondyle: ulnar nerve.']],
+mn:['"Lady between two Majors": Latissimus dorsi sits between Pectoralis major and Teres major.','Greater tubercle S-I-T from top: Supraspinatus, Infraspinatus, Teres minor.','Capitulum = Lateral (radius); Trochlea = Medial (ulna).'],
+tr:['Trap: the anatomical neck is rarely fractured; the SURGICAL neck is the common site.','Trap: the "funny bone" is the ulnar nerve, not the humerus.']},
+radius:{t:'Radius',hold:'Radius is lateral (thumb side). Narrow disc-shaped head is up. Radial tuberosity faces medially. Sharp interosseous border faces the ulna. Styloid process is at the bottom, lateral.',
+items:[[1,'What it is','Lateral forearm bone. Small at the elbow, large at the wrist.'],
+[1,'Parts','Head, neck, radial tuberosity, shaft, interosseous border, ulnar notch, styloid process, dorsal (Lister) tubercle.'],
+[2,'Insertions','Biceps (tuberosity), supinator (upper third), pronator teres (mid lateral), brachioradialis (styloid base), pronator quadratus (distal front).'],
+[2,'Origins','Flexor digitorum superficialis, flexor pollicis longus, abductor pollicis longus, extensor pollicis brevis.'],
+[2,'Joints','Humeroradial, proximal and distal radioulnar (pivot), radiocarpal (ellipsoid).'],
+[3,'Nerve supply','Posterior interosseous nerve winds round the neck through supinator. Superficial radial nerve runs under brachioradialis.'],
+[3,'Clinical','Colles fracture: distal radius, dorsal displacement (dinner-fork). Smith: volar displacement (garden-spade).']],
+mn:['Radius = Rotates the hand; "Radial head is up, radial styloid is out (thumb)".','Colles = Common, Carried backwards (dorsal).'],
+tr:['Trap: in supination radius is lateral, but in full pronation it crosses OVER the ulna.','Trap: radius forms most of the WRIST joint; ulna forms most of the ELBOW.']},
+ulna:{t:'Ulna',hold:'Ulna is medial (little finger side). Olecranon is up and its trochlear notch faces forward. Radial notch is on the lateral side of the upper end. Small head and styloid are at the bottom.',
+items:[[1,'What it is','Medial forearm bone. Big at the elbow, small at the wrist.'],
+[1,'Parts','Olecranon, coronoid process, trochlear notch, radial notch, supinator crest, ulnar tuberosity, shaft, head, styloid process.'],
+[2,'Insertions','Triceps (olecranon), brachialis (ulnar tuberosity).'],
+[2,'Origins','Flexor carpi ulnaris, flexor digitorum profundus, pronator quadratus, anconeus, supinator (crest), extensor pollicis longus, extensor indicis.'],
+[2,'Joints','Humeroulnar (hinge), proximal and distal radioulnar (pivot).'],
+[3,'Nerve supply','Ulnar nerve passes behind the medial epicondyle then between the heads of flexor carpi ulnaris.'],
+[3,'Clinical','Monteggia: proximal ulna fracture with radial head dislocation. Galeazzi: distal radius fracture with distal radioulnar dislocation.']],
+mn:['"MUGR": Monteggia = Ulna, Galeazzi = Radius.','Olecranon Overhangs the elbow; Coronoid Catches the trochlea in flexion.'],
+tr:['Trap: the ulna does NOT touch the carpal bones; a fibrocartilage disc separates it.','Trap: the trochlear notch is a hinge, but the radioulnar joints are pivots.']},
+hand:{t:'Hand bones',hold:'Palm facing forward, thumb lateral. Proximal row (S, L, T, P) lies next to the forearm; distal row (T, T, C, H) next to the metacarpals. Hook of hamate points forward on the little finger side.',
+items:[[1,'What it is','8 carpals in two rows, 5 metacarpals, 14 phalanges (thumb has 2, others 3).'],
+[1,'Carpals','Proximal row lateral to medial: Scaphoid, Lunate, Triquetral, Pisiform. Distal row: Trapezium, Trapezoid, Capitate, Hamate.'],
+[2,'Attachments','Flexor retinaculum: scaphoid and trapezium tubercles, pisiform and hook of hamate. Flexor carpi ulnaris inserts on pisiform. Interossei arise from metacarpals.'],
+[2,'Joints','Radiocarpal (ellipsoid), midcarpal, 1st CMC (saddle), MCP (condyloid), IP (hinge).'],
+[3,'Nerve supply','Median nerve: thenar muscles, lateral two lumbricals. Ulnar nerve: hypothenar, interossei, medial two lumbricals, hook of hamate relation.'],
+[3,'Clinical','Scaphoid fracture: snuffbox tenderness, risk of avascular necrosis (blood enters distally). Lunate dislocation: median nerve compression.']],
+mn:['Carpals: "Some Lovers Try Positions That They Can\'t Handle" (S, L, T, P, Trapezium, Trapezoid, Capitate, Hamate).','Median hand muscles: LOAF - Lateral 2 lumbricals, Opponens pollicis, Abductor pollicis brevis, Flexor pollicis brevis.','Interossei: PAD (Palmar ADduct), DAB (Dorsal ABduct).'],
+tr:['Trap: the pisiform is a sesamoid bone in the tendon of flexor carpi ulnaris.','Trap: the capitate is the largest carpal; the scaphoid is the most commonly fractured.']}};
+const FLOW={f1:['Sternum','SC joint','Clavicle','AC joint','Scapula','Glenohumeral','Humerus','Elbow','Radius + Ulna','Wrist','Carpals','CMC','Metacarpals','MCP','Phalanges'],
+f2:['Roots C5-T1','Trunks (upper, middle, lower)','Divisions','Cords (lateral, medial, posterior)','Axillary, radial, musculocutaneous, median, ulnar'],
+f3:['Basic: identify side and parts','Hold in anatomical position','Learn attachments','Link joints and types','Add nerves and clinical points','Test with traps and mnemonics']};
+for(const k in FLOW)document.getElementById(k).innerHTML=FLOW[k].map(x=>'<span>'+x+'</span>').join('<b>&#9654;</b>');
+
+// ---------- 3D ----------
+const cv=document.getElementById('cv'),tip=document.getElementById('tip');
+const R=new THREE.WebGLRenderer({antialias:true,alpha:true});cv.prepend(R.domElement);
+const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(40,1,.1,200);
+S.add(new THREE.AmbientLight(0xffffff,.7));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(5,10,12);S.add(dl);
+const pl=new THREE.PointLight(0xd4af37,.5);pl.position.set(-8,2,8);S.add(pl);
+const root=new THREE.Group(),pivot=new THREE.Group();pivot.add(root);S.add(pivot);
+const V=(x,y,z)=>new THREE.Vector3(x,y,z),G={};let cur;
+function add(m,reg,name,tp){m.userData={reg,name,tp};m.material=new THREE.MeshStandardMaterial({color:REG[reg][0],roughness:.6});cur.add(m)}
+function ball(c,r,reg,name,tp,sc=[1,1,1]){const m=new THREE.Mesh(new THREE.SphereGeometry(r,20,14));m.position.set(...c);m.scale.set(...sc);add(m,reg,name,tp)}
+function rod(a,b,r1,r2,reg,name,tp){a=V(...a);b=V(...b);const d=b.clone().sub(a),m=new THREE.Mesh(new THREE.CylinderGeometry(r2,r1,d.length(),14));
+m.position.copy(a.clone().add(b).multiplyScalar(.5));m.quaternion.setFromUnitVectors(V(0,1,0),d.normalize());add(m,reg,name,tp)}
+function bone(k,off,fn){cur=new THREE.Group();cur.userData.off=V(...off);fn();G[k]=cur;root.add(cur)}
+bone('clavicle',[-3,3,3],()=>{const p=[[.4,6,.2],[2.4,6.3,1],[4.2,6.4,.5],[6.2,6.3,-.6]];
+for(let i=0;i<3;i++)rod(p[i],p[i+1],.25,.25,'body','Shaft','S-shaped; medial 2/3 convex forward');
+ball(p[0],.42,'art','Sternal end','Saddle joint with manubrium (SC joint)');ball(p[3],.32,'art','Acromial end','Flat facet for acromion (AC joint)',[1,.5,1]);
+ball([4.9,6.2,.3],.26,'pro','Conoid tubercle','Conoid ligament (coracoclavicular)');
+rod([2.2,6.1,.9],[3.4,6.2,.9],.15,.15,'nrv','Subclavian groove','Subclavius insertion; nerve to subclavius');
+ball([1.6,6.4,1],.3,'mus','Medial attachments','Pectoralis major and SCM origin');ball([5.6,6.5,-.2],.3,'mus','Lateral attachments','Deltoid origin; trapezius insertion')});
+bone('scapula',[-4,0,-5],()=>{const sh=new THREE.Shape();sh.moveTo(3.2,5.8);sh.lineTo(4.2,.6);sh.lineTo(7.2,4.3);sh.lineTo(3.2,5.8);
+const m=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:.25,bevelEnabled:false}));m.position.z=-2.5;add(m,'body','Body','Supraspinous, infraspinous and subscapular fossae');
+rod([3.4,4.7,-2.6],[7.2,5.9,-1.3],.25,.25,'mus','Spine','Deltoid origin; trapezius insertion');ball([7.3,6.1,-1],.4,'pro','Acromion','Joins clavicle (AC joint)',[1.3,.5,1]);
+rod([6,5,-1.8],[6.3,5,.4],.22,.2,'pro','Coracoid process','Pec minor insertion; short head biceps, coracobrachialis origin');
+ball([7.35,4.3,-1],.5,'art','Glenoid cavity','Shallow socket, deepened by labrum',[.4,1.3,.8]);ball([5.7,5.7,-2],.2,'nrv','Suprascapular notch','Nerve under ligament, artery over');
+ball([7.3,5.1,-1.2],.22,'mus','Supraglenoid tubercle','Long head of biceps');ball([7.3,3.5,-1.4],.25,'mus','Infraglenoid tubercle','Long head of triceps');ball([4.2,.7,-2.4],.35,'mus','Inferior angle','Teres major; latissimus slip')});
+bone('humerus',[4,3,0],()=>{rod([8.4,3,-.8],[8.6,-3.3,-.8],.55,.55,'body','Shaft','Lateral, medial and posterior surfaces');
+ball([8.2,4.2,-.9],1,'art','Head','Fits glenoid; faces medial, up, back');ball([9.2,3.9,-.5],.5,'mus','Greater tubercle','Supraspinatus, infraspinatus, teres minor');
+ball([8.5,3.6,0],.35,'mus','Lesser tubercle','Subscapularis');ball([8.5,2.7,-.8],.62,'nrv','Surgical neck','Axillary nerve at risk',[1,.3,1]);
+ball([9,.4,-.8],.3,'mus','Deltoid tuberosity','Deltoid insertion');rod([8.3,1.8,-1.4],[9,-.4,-.8],.2,.2,'nrv','Spiral groove','Radial nerve, profunda brachii');
+ball([8.1,-3.8,-.8],.55,'art','Trochlea','Articulates with ulna',[1,.8,1]);ball([9.2,-3.8,-.8],.45,'art','Capitulum','Articulates with radial head');
+ball([7.2,-3.4,-.8],.4,'mus','Medial epicondyle','Common flexor origin; ulnar nerve behind');ball([10,-3.3,-.8],.3,'mus','Lateral epicondyle','Common extensor origin')});
+bone('radius',[4,-1,3],()=>{ball([9.4,-4.7,-.8],.48,'art','Head','Disc; pivots in annular ligament',[1,.5,1]);
+rod([9.4,-5.2,-.8],[9.9,-10.8,-.8],.28,.5,'body','Shaft','Interosseous border faces ulna');ball([9.1,-5.7,-.5],.28,'mus','Radial tuberosity','Biceps insertion');
+ball([10.5,-11.2,-.8],.3,'pro','Styloid process','Lateral side; brachioradialis');ball([9.9,-11.1,-.8],.55,'art','Carpal surface','Scaphoid, lunate',[1,.4,1]);
+ball([9.9,-10.6,-1.3],.18,'nrv','Lister tubercle','Pulley for EPL tendon')});
+bone('ulna',[-3,-1,-2],()=>{ball([8,-3.6,-1.3],.58,'mus','Olecranon','Triceps insertion');ball([8.2,-4.3,-.6],.5,'art','Trochlear notch','Grips trochlea (hinge)',[1,1,.7]);
+ball([8.3,-5,-.2],.3,'mus','Coronoid process','Brachialis, pronator teres');rod([8.1,-5.2,-.9],[7.6,-11,-.9],.45,.25,'body','Shaft','Interosseous border faces radius');
+ball([7.6,-11.3,-.9],.4,'art','Head','Distal radioulnar joint');ball([7.2,-11.7,-1.1],.2,'pro','Styloid process','Medial; ulnar collateral ligament')});
+bone('hand',[0,-4,0],()=>{const c=[[10,-12.2,-.6,'art','Scaphoid'],[9,-12.2,-.8,'art','Lunate'],[8,-12.2,-.8,'art','Triquetral'],[7.6,-12.2,-.3,'mus','Pisiform'],
+[10.5,-13,-.4,'pro','Trapezium'],[9.6,-13.1,-.8,'pro','Trapezoid'],[8.8,-13,-.8,'pro','Capitate'],[7.9,-13,-.6,'pro','Hamate']];
+c.forEach(q=>ball(q.slice(0,3),.5,q[3],q[4],q[3]=='art'?'Proximal row: wrist joint':q[3]=='mus'?'Sesamoid in FCU tendon':'Distal row'));
+ball([7.9,-13.1,-.1],.2,'mus','Hook of hamate','Flexor retinaculum; ulnar nerve nearby');
+const dg=[[[7.4,-13.7],[6.6,-16.2],.8],[[8.2,-13.7],[7.9,-16.4],1],[[9,-13.7],[9,-16.5],1],[[9.8,-13.7],[10.2,-16.2],1],[[10.8,-13.4],[12.3,-15.4],.7]];
+dg.forEach((d,i)=>{let a=V(d[0][0],d[0][1],-.8),b=V(d[1][0],d[1][1],-.8);rod(a.toArray(),b.toArray(),.26,.3,'body','Metacarpal '+(5-i),'Base to head; MCP joint at head');
+const u=b.clone().sub(a).normalize();let p=b.clone();[2.2,1.3,1.1].slice(i==4?1:0).forEach((L,j)=>{const n=p.clone().add(u.clone().multiplyScalar(L));
+ball(p.toArray(),.3,'art','Joint','MCP / IP joint');rod(p.toArray(),n.toArray(),.22,.2,'body',['Proximal','Middle','Distal'][i==4?j+(j?1:0)*0:j]+' phalanx','14 phalanges in total');p=n})})});
+
+let rx=0,ry=0,zoom=1,colorOn=true,sel='all',lvl=3,sepv=0;
+function recolor(){root.traverse(m=>{if(m.isMesh)m.material.color.set(colorOn?REG[m.userData.reg][0]:'#e9e1cf')})}
+function layout(){const keys=sel=='all'?Object.keys(G):[sel];
+for(const k in G){G[k].visible=keys.includes(k);G[k].position.copy(sel=='all'?G[k].userData.off.clone().multiplyScalar(sepv):V(0,0,0))}
+root.position.set(0,0,0);const bx=new THREE.Box3();keys.forEach(k=>bx.expandByObject(G[k]));const c=bx.getCenter(V()),s=bx.getSize(V());
+root.position.sub(c);C.userData.d=Math.max(s.x,s.y,s.z)*1.7+4}
+function render(){C.position.set(0,0,C.userData.d/zoom);C.lookAt(0,0,0);pivot.rotation.set(rx,ry,0);R.render(S,C)}
+function size(){const w=cv.clientWidth,h=cv.clientHeight;R.setSize(w,h,false);R.setPixelRatio(Math.min(devicePixelRatio,2));C.aspect=w/h;C.updateProjectionMatrix();render()}
+addEventListener('resize',size);
+let dn=null,mv=0;cv.addEventListener('pointerdown',e=>{dn=[e.clientX,e.clientY];mv=0;cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{if(!dn)return;const dx=e.clientX-dn[0],dy=e.clientY-dn[1];mv+=Math.abs(dx)+Math.abs(dy);ry+=dx*.01;rx=Math.max(-1.5,Math.min(1.5,rx+dy*.01));dn=[e.clientX,e.clientY];render()});
+cv.addEventListener('pointerup',e=>{dn=null;if(mv<6){const r=cv.getBoundingClientRect(),m=new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),rc=new THREE.Raycaster();
+rc.setFromCamera(m,C);const h=rc.intersectObjects(root.children.filter(g=>g.visible),true)[0];
+if(h){const u=h.object.userData;tip.style.display='block';tip.innerHTML='<b style="color:#d4af37">'+u.name+'</b> ('+REG[u.reg][1]+')<br>'+u.tp}else tip.style.display='none'}});
+cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.5,Math.min(4,zoom*(e.deltaY<0?1.1:.9)));render()},{passive:false});
+
+// ---------- UI ----------
+const $=id=>document.getElementById(id);
+$('tabs').innerHTML=['all',...Object.keys(G)].map(k=>'<button data-k="'+k+'">'+(k=='all'?'Articulated set':B[k].t)+'</button>').join('');
+$('lvls').innerHTML=[[1,'Basic'],[2,'Intermediate'],[3,'Advanced']].map(a=>'<button data-l="'+a[0]+'">'+a[1]+'</button>').join('');
+$('leg').innerHTML=Object.values(REG).map(r=>'<span><i style="background:'+r[0]+'"></i>'+r[1]+'</span>').join('');
+function info(){const el=$('info');if(sel=='all'){el.innerHTML='<div class="card"><h3>Articulated limb</h3><p>All six bone groups in anatomical position, right side, seen from the front. Use the slider to separate them into disarticulated parts, then pick a bone tab to study it alone.</p></div>'+
+Object.keys(B).map(k=>'<div class="card"><h3>'+B[k].t+'</h3><p>'+B[k].items[0][2]+'</p></div>').join('');return}
+const b=B[sel];el.innerHTML='<h2>'+b.t+'</h2><div class="card hold"><h3>How to hold it (anatomical position)</h3><p>'+b.hold+'</p></div>'+
+b.items.filter(i=>i[0]<=lvl).map(i=>'<div class="card"><h3>'+i[1]+' <span class="lv">level '+i[0]+'</span></h3><p>'+i[2]+'</p></div>').join('')+
+'<h3 style="margin-top:14px">Mnemonics</h3>'+b.mn.map(x=>'<div class="card mn"><p>'+x+'</p></div>').join('')+
+(lvl>=3?'<h3 style="margin-top:14px">Facts that confuse</h3>'+b.tr.map(x=>'<div class="card tr"><p>'+x+'</p></div>').join(''):'')}
+function sync(){document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x.dataset.k==sel));document.querySelectorAll('#lvls button').forEach(x=>x.classList.toggle('on',x.dataset.l==lvl));
+tip.style.display='none';layout();info();render()}
+$('tabs').onclick=e=>{if(e.target.dataset.k){sel=e.target.dataset.k;rx=ry=0;zoom=1;sync()}};
+$('lvls').onclick=e=>{if(e.target.dataset.l){lvl=+e.target.dataset.l;sync()}};
+$('bPos').onclick=()=>{rx=ry=0;zoom=1;render()};
+$('bCol').onclick=e=>{colorOn=!colorOn;e.target.classList.toggle('on',colorOn);e.target.textContent='Colour: '+(colorOn?'regions':'plain bone');recolor();render()};
+$('sep').oninput=e=>{sepv=+e.target.value;if(sel!='all'){sel='all'}sync()};
+recolor();size();sync();
+</script></body></html>
